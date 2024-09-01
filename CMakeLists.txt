@@ -23,6 +23,8 @@ add_executable(
     src/game/Game.cpp
     src/game/Player.h
     src/game/Player.cpp
+    src/engine/ResourceManager.h
+    src/engine/ResourceManager.cpp
 )
 
 # Подключаем библиотеки SFML
@@ -44,3 +46,10 @@ if(WIN32)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
     endforeach()
 endif()
+
+# Копирование папки assets в выходную директорию
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/assets"           # Источник
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"  # Целевая директория
+)

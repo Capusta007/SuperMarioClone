@@ -2,14 +2,16 @@
 
 #include <iostream>
 
-Game::Game(int width, int height) : m_videoMode(width, height), m_window(m_videoMode, "SFML works!"), m_player(100,100, 200)
+Game::Game(int width, int height, const std::string& pathToExecutable) : m_videoMode(width, height), m_window(m_videoMode, "SFML works!"),
+                                                                  m_resourceManager(pathToExecutable),
+                                                                  m_player(0,0, 200, m_resourceManager)
 {
 }
 
 void Game::run()
 {
     sf::Clock clock;
-    
+
     while (m_window.isOpen())
     {
         float deltaTime = clock.restart().asSeconds(); /// Time from last frame

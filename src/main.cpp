@@ -2,9 +2,9 @@
 
 #include "game/Game.h"
 
-int main()
+int main(int argc, char** argv)
 {
-    Game game(200,200);
+    Game game(1080,720, argv[0]);
     game.run();
     return 0;
 }
