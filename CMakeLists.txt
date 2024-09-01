@@ -21,6 +21,8 @@ add_executable(
     src/main.cpp
     src/game/Game.h
     src/game/Game.cpp
+    src/game/Player.h
+    src/game/Player.cpp
 )
 
 # Подключаем библиотеки SFML

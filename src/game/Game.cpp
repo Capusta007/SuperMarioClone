@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Game::Game() : m_videoMode(200, 200), m_window(m_videoMode, "SFML works!")
+Game::Game(int width, int height) : m_videoMode(width, height), m_window(m_videoMode, "SFML works!")
 {
 }
 
@@ -22,6 +22,7 @@ void Game::run()
 
         m_window.clear();
         m_window.draw(shape);
+        m_player.render(m_window);
         m_window.display();
     }
 }
