@@ -23,6 +23,8 @@ add_executable(
     src/game/Game.cpp
     src/game/Player.h
     src/game/Player.cpp
+    src/game/TextLabel.h
+    src/game/TextLabel.cpp
     src/engine/ResourceManager.h
     src/engine/ResourceManager.cpp
 )

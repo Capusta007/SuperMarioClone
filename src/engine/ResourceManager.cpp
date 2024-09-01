@@ -16,7 +16,7 @@ sf::Texture& ResourceManager::getTexture(const std::string& textureName)
 	}
 	else {
 		sf::Texture texture;
-		if (!texture.loadFromFile(m_pathToExecutableFolder + "/assets/" + textureName)) {
+		if (!texture.loadFromFile(m_pathToExecutableFolder + "/assets/textures/" + textureName)) {
 			throw std::runtime_error("Unable to load texture: " + textureName);
 		}
 		else {
@@ -24,4 +24,24 @@ sf::Texture& ResourceManager::getTexture(const std::string& textureName)
 		}
 		return m_textures[textureName];
 	}
+}
+
+sf::Font& ResourceManager::getFont(const std::string& fontName)
+{
+
+	auto it = m_fonts.find(fontName);
+	if (it != m_fonts.end()) {
+		return it->second;
+	}
+	else {
+		sf::Font font;
+		if (!font.loadFromFile(m_pathToExecutableFolder + "/assets/fonts/" + fontName)) {
+			throw std::runtime_error("Unable to load font: " + fontName);
+		}
+		else {
+			m_fonts.emplace(fontName, font);
+		}
+		return m_fonts[fontName];
+	}
+
 }
