@@ -19,7 +19,9 @@ find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
 add_executable(
     ${PROJECT_NAME} 
     src/main.cpp
-    )
+    src/game/Game.h
+    src/game/Game.cpp
+)
 
 # Подключаем библиотеки SFML
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
