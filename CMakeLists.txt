@@ -25,8 +25,12 @@ add_executable(
     src/game/Player.cpp
     src/game/TextLabel.h
     src/game/TextLabel.cpp
+    src/game/Entity.h
+    src/game/Entity.cpp
     src/engine/ResourceManager.h
     src/engine/ResourceManager.cpp
+    src/engine/Physics.h
+    src/engine/Physics.cpp
 )
 
 # Подключаем библиотеки SFML

@@ -3,17 +3,18 @@
 #include <iostream>
 #include "TextLabel.h"
 
-Game::Game(int width, int height, const std::string& pathToExecutable) : m_videoMode(width, height), m_window(m_videoMode, "SFML works!"),
-																		 m_resourceManager(pathToExecutable),
-																		 m_player(0, 0, 200, m_resourceManager)
+Game::Game(int width, int height, const std::string& pathToExecutable)
+	: m_videoMode(width, height),
+	m_window(m_videoMode, "SFML works!"),
+	m_resourceManager(pathToExecutable),
+	m_player(0, 0, {200,0}, m_resourceManager)
 {
 }
 
 void Game::run()
 {
 	sf::Clock clock;
-	const std::string s = "sdfsd";
-	TextLabel text("Score:", "Handjet/Handjet-Black.ttf", m_resourceManager);
+	TextLabel text("Score:", "Handjet-Black.ttf", m_resourceManager);
 
 	while (m_window.isOpen())
 	{
