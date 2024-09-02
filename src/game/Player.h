@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../engine/ResourceManager.h"
+#include "../engine/Animation.h"
 #include "Entity.h"
 
 class Player : public Entity {
@@ -16,4 +17,6 @@ private:
 
 	sf::Sprite m_sprite;
 	ResourceManager& m_resourceManager;
+	Animation m_runAnimation;
+	bool m_isMoving;
 };

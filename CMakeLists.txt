@@ -31,6 +31,8 @@ add_executable(
     src/engine/ResourceManager.cpp
     src/engine/Physics.h
     src/engine/Physics.cpp
+    src/engine/Animation.h
+    src/engine/Animation.cpp
 )
 
 # Подключаем библиотеки SFML

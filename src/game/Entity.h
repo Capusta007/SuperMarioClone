@@ -16,5 +16,5 @@ public:
 protected:
 	sf::Vector2f m_position;
 	sf::Vector2f m_moveSpeed;
-	bool isOnGround = false;
+	bool m_isOnGround = false;
 };
