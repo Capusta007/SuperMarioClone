@@ -1,1 +1,3 @@
-build
+/build/
+/Game/build
+/LevelEditor/build
