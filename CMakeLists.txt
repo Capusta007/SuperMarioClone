@@ -13,3 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_subdirectory(Game)
 # Добавляем редактор уровней
 add_subdirectory(LevelEditor)
+
+
+target_include_directories(SuperMarioGame PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include )
+target_include_directories(LevelEditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include )
