@@ -1,20 +1,8 @@
 #include "Player.h"
 #include <iostream>
 
-
-
-constexpr float SCALE_FACTOR = 5.0f;
-constexpr float JUMP_STRENGHT = 1000.f;
-
-constexpr int BIG_MARIO_LEFT = 0;
-constexpr int BIG_MARIO_TOP = 0;
-constexpr int BIG_MARIO_WIDTH = 18;
-constexpr int BIG_MARIO_HEIGHT = 36;
-
-constexpr int SMALL_MARIO_LEFT = 0;
-constexpr int SMALL_MARIO_TOP = 72;
-constexpr int SMALL_MARIO_WIDTH = 18;
-constexpr int SMALL_MARIO_HEIGHT = 18;
+#include "GameSettings.h"
+#include "../engine/TextureCoords.h"
 
 
 
@@ -30,13 +18,15 @@ Player::Player(float x, float y, sf::Vector2f moveSpeed, ResourceManager& rm) : 
 
 
 	// Animations
-	m_runAnimation.addFrame({ BIG_MARIO_LEFT + BIG_MARIO_WIDTH * 4,BIG_MARIO_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
-	m_runAnimation.addFrame({ BIG_MARIO_LEFT + BIG_MARIO_WIDTH * 5,BIG_MARIO_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
-	m_runAnimation.addFrame({ BIG_MARIO_LEFT + BIG_MARIO_WIDTH * 6,BIG_MARIO_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
+	m_runAnimation.addFrame({ BIG_MARIO_RUN_LEFT,BIG_MARIO_RUN_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
+	m_runAnimation.addFrame({ BIG_MARIO_RUN_LEFT + BIG_MARIO_WIDTH ,BIG_MARIO_RUN_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
+	m_runAnimation.addFrame({ BIG_MARIO_RUN_LEFT + BIG_MARIO_WIDTH * 2,BIG_MARIO_RUN_TOP, BIG_MARIO_WIDTH, BIG_MARIO_HEIGHT });
 }
 
-void Player::update(float deltaTime)
+void Player::update(float deltaTime, std::vector<Block> blocks)
 {
+	handleCollision(blocks);
+
 	/// delta time handle
 	handleInput(deltaTime);
 	applyGravity(deltaTime);
@@ -87,12 +77,14 @@ void Player::handleInput(float deltaTime)
 		m_isOnGround = false;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		m_position += {-m_moveSpeed.x * deltaTime, 0.f};
+		m_moveSpeed.x = -MARIO_SPEED;
+		m_position += {m_moveSpeed.x* deltaTime, 0.f};
 		m_isMoving = true;
 		m_sprite.setScale(-SCALE_FACTOR, SCALE_FACTOR);
 		m_sprite.setOrigin(m_sprite.getGlobalBounds().width / SCALE_FACTOR, 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		m_moveSpeed.x = MARIO_SPEED;
 		m_position += {m_moveSpeed.x* deltaTime, 0.f};
 		m_sprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
 		m_sprite.setOrigin(0, 0);
@@ -101,5 +93,51 @@ void Player::handleInput(float deltaTime)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 		m_isMoving = false;
+	}
+}
+
+void Player::handleCollision(std::vector<Block> blocks)
+{
+	for (Block block : blocks) {
+		if (block.getGlobalBounds().intersects(m_sprite.getGlobalBounds())) {
+			float playerBottom = m_sprite.getGlobalBounds().top + m_sprite.getGlobalBounds().height;
+			float playerRight = m_sprite.getGlobalBounds().left + m_sprite.getGlobalBounds().width;
+			float platformBottom = block.getGlobalBounds().top + block.getGlobalBounds().height;
+			float platformRight = block.getGlobalBounds().left + block.getGlobalBounds().width;
+
+			// check side where collision appears
+			float bottomCollision = platformBottom - m_sprite.getGlobalBounds().top;
+			float topCollision = playerBottom - block.getGlobalBounds().top;
+			float leftCollision = playerRight - block.getGlobalBounds().left;
+			float rightCollision = platformRight - m_sprite.getGlobalBounds().left;
+
+			bool movingDown = m_moveSpeed.y > 0;
+			bool movingUp = m_moveSpeed.y < 0;
+			bool movingLeft = m_moveSpeed.x < 0;
+			bool movingRight = m_moveSpeed.x > 0;
+
+
+			// top collision
+			if (topCollision <= bottomCollision && topCollision <= leftCollision && topCollision <= rightCollision && movingDown) {
+				m_position.y = platformBottom - m_sprite.getGlobalBounds().height - block.getGlobalBounds().height;
+				m_moveSpeed.y = 0;
+				m_isOnGround = true;
+			}
+			//botton collision
+			else if (bottomCollision <= topCollision && bottomCollision <= leftCollision && bottomCollision <= rightCollision && movingUp) {
+				m_position.y = platformBottom;
+				m_moveSpeed.y = 0;
+			}
+			// left collision
+			else if (leftCollision <= topCollision && leftCollision <= rightCollision && leftCollision <= bottomCollision && movingRight) {
+				m_position.x = platformRight - block.getGlobalBounds().width - m_sprite.getGlobalBounds().width;
+				m_moveSpeed.x = 0;
+			}
+			// right collision
+			else if (rightCollision <= topCollision && rightCollision <= leftCollision && rightCollision <= bottomCollision && movingLeft) {
+				m_position.x = platformRight;
+				m_moveSpeed.x = 0;
+			}
+		}
 	}
 }
