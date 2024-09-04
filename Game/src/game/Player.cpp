@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "GameSettings.h"
-#include "../engine/TextureCoords.h"
+#include "TextureCoords.h"
 
 
 

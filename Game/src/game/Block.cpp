@@ -1,7 +1,7 @@
 #include "Block.h"
 
 #include "GameSettings.h"
-#include "../engine/TextureCoords.h"
+#include "TextureCoords.h"
 
 Block::Block(float x, float y, ResourceManager& rm)
 	: m_resourceManager(rm)

@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 
+#include "../../Game/src/game/Block.h"
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
