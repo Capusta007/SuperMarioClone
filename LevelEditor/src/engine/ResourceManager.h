@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 
 #include <SFML/Graphics.hpp>
 
@@ -12,7 +12,7 @@ public:
 	ResourceManager(const std::string& pathToExecutable);
 	sf::Texture& getTexture(const std::string& textureName);
 	sf::Font& getFont(const std::string& fontName);
-	void loadLevelData(LevelData& levelData,const std::string& filename);
+	void saveLevelData(const LevelData& levelData, const std::string& filename);
 
 private:
 	std::map<std::string, sf::Texture> m_textures;

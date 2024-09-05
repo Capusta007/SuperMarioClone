@@ -4,6 +4,12 @@
 #include "TextLabel.h"
 #include "Block.h"
 
+#include "LevelData.h"
+
+#include "TextureCoords.h"
+
+
+
 Game::Game(int width, int height, const std::string& pathToExecutable)
 	: m_videoMode(width, height),
 	m_window(m_videoMode, "SFML works!"),
@@ -17,12 +23,21 @@ void Game::run()
 {
 	sf::Clock clock;
 	TextLabel text("Score:", "Handjet-Black.ttf", m_resourceManager);
-	Block block1(200, 500, m_resourceManager);
-	Block block2(300, 400, m_resourceManager);
+	LevelData levelData;
+
+	m_resourceManager.loadLevelData(levelData, "firstLevel");
+
 
 	std::vector<Block> blocks;
-	blocks.push_back(block1);
-	blocks.push_back(block2);
+
+	// todo: Потом перенесешь это в менеджер ресурсов и сделаешь класс для уровня (надо наверное, чтобы уровень возвращался из loadLevelData)
+	for (const auto& pair : levelData.blocks) {
+		Block block(pair.first.first, pair.first.second, m_resourceManager);
+		block.setSpriteRect({ pair.second.first, pair.second.second, BLOCK_WIDTH, BLOCK_HEIGHT });
+		blocks.push_back(block);
+        std::cout << "Key: (" << pair.first.first << ", " << pair.first.second << ") "
+                  << "Value: (" << pair.second.first << ", " << pair.second.second << ")\n";
+    }
 
 	while (m_window.isOpen())
 	{
@@ -36,13 +51,15 @@ void Game::run()
 		}
 
 		m_player.update(deltaTime, blocks);
-		block1.update();
-		block2.update();
+		for (auto block : blocks) {
+			block.update();
+		}
 
 		m_window.clear();
 		m_player.render(m_window);
-		block1.render(m_window);
-		block2.render(m_window);
+		for (auto block : blocks) {
+			block.render(m_window);
+		}
 		text.render(m_window);
 		m_window.display();
 	}

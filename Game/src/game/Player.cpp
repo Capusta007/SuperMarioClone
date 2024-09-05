@@ -49,18 +49,14 @@ void Player::update(float deltaTime, std::vector<Block> blocks)
 	/// sprite handle
 	m_sprite.setPosition(m_position);
 
-	//Todo: Пока так оставь, потом убери эту фигню
-	if (m_position.y >= 500)
-	{
-		m_position.y = 500;
-		m_moveSpeed.y = 0;
-		m_isOnGround = true;
-	}
-	else
-	{
-		m_isOnGround = false;
-	}
 
+	m_isOnGround = false;
+
+	// todo: Потом поменяй тут (Или так тоже нормально?)
+	if (m_position.y > SCREEN_HEIGHT) {
+		m_position.y = 0;
+		m_moveSpeed.y = 0;
+	}
 }
 
 void Player::render(sf::RenderWindow& window)
