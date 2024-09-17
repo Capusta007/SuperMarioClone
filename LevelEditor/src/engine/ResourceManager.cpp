@@ -66,16 +66,13 @@ void ResourceManager::saveLevelData(const LevelData& levelData, const std::strin
 	}
 
 	// save size of map
-	size_t mapSize = levelData.blocks.size();
+	size_t mapSize = levelData.blocksSprites.size();
 	outFile.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
 
-	for (const auto& pair : levelData.blocks) {
-		// save blocks position
-		outFile.write(reinterpret_cast<const char*>(&pair.first.first), sizeof(pair.first.first));
-		outFile.write(reinterpret_cast<const char*>(&pair.first.second), sizeof(pair.first.second));
-		// save blocks textures
-		outFile.write(reinterpret_cast<const char*>(&pair.second.first), sizeof(pair.second.first));
-		outFile.write(reinterpret_cast<const char*>(&pair.second.second), sizeof(pair.second.second));
+	for (const auto& pair : levelData.blocksSprites) {
+		// write coord and sprite in file
+		outFile.write(reinterpret_cast<const char*>(&pair.first), sizeof(pair.first));
+		outFile.write(reinterpret_cast<const char*>(&pair.second), sizeof(pair.second));
 	}
 
 	outFile.close();

@@ -61,17 +61,15 @@ void ResourceManager::loadLevelData(LevelData& levelData, const std::string& fil
 
 	// Load maps elements
 	for (size_t i = 0; i < mapSize; ++i) {
-		std::pair<int, int> key;
-		std::pair<int, int> value;
+		sf::Vector2i key;
+		sf::Sprite value;
 
 		// Load coordinates of block
-		inFile.read(reinterpret_cast<char*>(&key.first), sizeof(key.first));
-		inFile.read(reinterpret_cast<char*>(&key.second), sizeof(key.second));
-		// Load texture coordinates
-		inFile.read(reinterpret_cast<char*>(&value.first), sizeof(value.first));
-		inFile.read(reinterpret_cast<char*>(&value.second), sizeof(value.second));
+		inFile.read(reinterpret_cast<char*>(&key), sizeof(key));
+		// Load sprite of block
+		inFile.read(reinterpret_cast<char*>(&value), sizeof(value));
 
-		levelData.blocks[key] = value;
+		levelData.blocksSprites[key] = value;
 	}
 
 	inFile.close();

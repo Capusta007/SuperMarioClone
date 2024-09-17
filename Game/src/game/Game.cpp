@@ -31,13 +31,13 @@ void Game::run()
 	std::vector<Block> blocks;
 
 	// todo: Потом перенесешь это в менеджер ресурсов и сделаешь класс для уровня (надо наверное, чтобы уровень возвращался из loadLevelData)
-	for (const auto& pair : levelData.blocks) {
-		Block block(pair.first.first, pair.first.second, m_resourceManager);
-		block.setSpriteRect({ pair.second.first, pair.second.second, BLOCK_WIDTH, BLOCK_HEIGHT });
+	for (const auto& pair : levelData.blocksSprites) {
+		Block block(pair.first.x, pair.first.y, m_resourceManager);
+		block.setSpriteRect(pair.second.getTextureRect());
 		blocks.push_back(block);
-        std::cout << "Key: (" << pair.first.first << ", " << pair.first.second << ") "
-                  << "Value: (" << pair.second.first << ", " << pair.second.second << ")\n";
-    }
+		std::cout << "Key: (" << pair.first.x << ", " << pair.first.y << ") "
+			<< "Value: (" << pair.second.getPosition().x << ", " << pair.second.getPosition().y << ")\n";
+	}
 
 	while (m_window.isOpen())
 	{

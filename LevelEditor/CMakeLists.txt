@@ -21,8 +21,11 @@ add_executable(
     src/main.cpp
     src/LevelEditor/LevelEditor.h
     src/LevelEditor/LevelEditor.cpp
+    src/LevelEditor/ChosenSprite.h
     src/engine/ResourceManager.h
     src/engine/ResourceManager.cpp
+    src/gameElements/TextLabel.h
+    src/gameElements/TextLabel.cpp
 )
 
 # Подключаем библиотеки SFML

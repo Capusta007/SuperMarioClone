@@ -10,7 +10,6 @@ constexpr int SMALL_MARIO_TOP = 72;
 constexpr int SMALL_MARIO_WIDTH = 18;
 constexpr int SMALL_MARIO_HEIGHT = 18;
 
-constexpr int NUMBER_OF_BLOCKS = 6;
 constexpr int BLOCK_LEFT = 0;
 constexpr int BLOCK_TOP = 0;
 constexpr int BLOCK_WIDTH = 16;
