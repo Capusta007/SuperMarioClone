@@ -2,9 +2,11 @@
 
 #include "game/Game.h"
 
+#include "GameSettings.h"
+
 int main(int argc, char** argv)
 {
-    Game game(1080,720, argv[0]);
+    Game game(SCREEN_WIDTH,SCREEN_HEIGHT, argv[0]);
     game.run();
     return 0;
 }

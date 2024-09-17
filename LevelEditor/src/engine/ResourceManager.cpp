@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 ResourceManager::ResourceManager(const std::string& pathToExecutable)
 {
@@ -9,7 +10,7 @@ ResourceManager::ResourceManager(const std::string& pathToExecutable)
 	m_pathToExecutableFolder = pathToExecutable.substr(0, index);
 }
 
-sf::Texture& ResourceManager::getTexture(const std::string& textureName) 
+sf::Texture& ResourceManager::getTexture(const std::string& textureName)
 {
 	auto it = m_textures.find(textureName);
 	if (it != m_textures.end()) {
@@ -47,30 +48,32 @@ sf::Font& ResourceManager::getFont(const std::string& fontName)
 
 }
 
-void ResourceManager::loadLevelData(LevelData& levelData, const std::string& filename)
-{
-	std::ifstream inFile(m_pathToExecutableFolder + "/levels/" + filename, std::ios::binary);
+void ResourceManager::saveLevelData(const LevelData& levelData, const std::string& filename) {
+	const std::string folderPath = m_pathToExecutableFolder + "/CreatedLevels";
 
-	if (!inFile) {
-		throw std::runtime_error("Error opening file for reading: " + filename);
+	// check is folder exists
+	if (!std::filesystem::exists(folderPath)) {
+		std::filesystem::create_directories(folderPath);
 	}
 
-	// Load size of map
-	size_t mapSize = 0;
-	inFile.read(reinterpret_cast<char*>(&mapSize), sizeof(mapSize));
+	// full path to file
+	std::string fullPath = folderPath + "/" + filename;
 
-	// Load maps elements
-	for (size_t i = 0; i < mapSize; ++i) {
-		sf::Vector2i key;
-		sf::Sprite value;
+	std::ofstream outFile(fullPath, std::ios::binary | std::ios::trunc);
 
-		// Load coordinates of block
-		inFile.read(reinterpret_cast<char*>(&key), sizeof(key));
-		// Load sprite of block
-		inFile.read(reinterpret_cast<char*>(&value), sizeof(value));
-
-		levelData.blocksSprites[key] = value;
+	if (!outFile) {
+		throw std::runtime_error("Error opening file for writing: " + fullPath);
 	}
 
-	inFile.close();
+	// save size of map
+	size_t mapSize = levelData.blocksSprites.size();
+	outFile.write(reinterpret_cast<const char*>(&mapSize), sizeof(mapSize));
+
+	for (const auto& pair : levelData.blocksSprites) {
+		// write coord and sprite in file
+		outFile.write(reinterpret_cast<const char*>(&pair.first), sizeof(pair.first));
+		outFile.write(reinterpret_cast<const char*>(&pair.second), sizeof(pair.second));
+	}
+
+	outFile.close();
 }

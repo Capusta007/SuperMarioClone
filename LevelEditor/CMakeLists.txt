@@ -19,6 +19,13 @@ find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
 add_executable(
     ${PROJECT_NAME} 
     src/main.cpp
+    src/LevelEditor/LevelEditor.h
+    src/LevelEditor/LevelEditor.cpp
+    src/LevelEditor/ChosenSprite.h
+    src/engine/ResourceManager.h
+    src/engine/ResourceManager.cpp
+    src/gameElements/TextLabel.h
+    src/gameElements/TextLabel.cpp
 )
 
 # Подключаем библиотеки SFML
@@ -40,3 +47,11 @@ if(WIN32)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>)
     endforeach()
 endif()
+
+
+# Копирование папки assets в выходную директорию
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_CURRENT_SOURCE_DIR}/assets"           # Источник
+    "$<TARGET_FILE_DIR:${PROJECT_NAME}>/assets"  # Целевая директория
+)
